@@ -94,7 +94,12 @@ function downloadCharacterPDF(id) {
 
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
             pdf.save(`fiche_personnage_${id}.pdf`);
+        }).catch(error => {
+            console.error('Erreur lors de la génération du PDF:', error);
+            alert('Échec du téléchargement de la fiche. Veuillez réessayer.');
         });
+    } else {
+        alert('Personnage non trouvé. Veuillez réessayer.');
     }
 }
 

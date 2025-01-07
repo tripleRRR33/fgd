@@ -28,7 +28,49 @@ function exportCharactersToCSV() {
     URL.revokeObjectURL(url);
 }
 
-// Ajouter un bouton pour l'exportation dans la liste des personnages
+// Fonction pour convertir les données des personnages en JSON
+function exportCharactersToJSON() {
+    const characters = JSON.parse(localStorage.getItem('characters')) || [];
+    if (characters.length === 0) {
+        alert('Aucun personnage à exporter.');
+        return;
+    }
+
+    const jsonString = JSON.stringify(characters, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'characters.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Fonction pour convertir les données des personnages en PDF
+function exportCharactersToPDF() {
+    const characters = JSON.parse(localStorage.getItem('characters')) || [];
+    if (characters.length === 0) {
+        alert('Aucun personnage à exporter.');
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    characters.forEach((character, index) => {
+        doc.text(`Personnage ${index + 1}`, 10, 10 + index * 10);
+        for (const [key, value] of Object.entries(character)) {
+            doc.text(`${key}: ${value}`, 10, 20 + index * 10);
+        }
+        if (index !== characters.length - 1) {
+            doc.addPage();
+        }
+    });
+
+    doc.save('characters.pdf');
+}
+
+// Ajouter les boutons pour l'exportation dans la liste des personnages
 function loadCharacterList() {
     const characterList = document.getElementById('character-list');
     characterList.innerHTML = '';
@@ -46,30 +88,24 @@ function loadCharacterList() {
         characterList.appendChild(characterItem);
     });
 
-    // Ajouter le bouton d'exportation
-    const exportButton = document.createElement('button');
-    exportButton.textContent = 'Exporter en CSV';
-    exportButton.onclick = exportCharactersToCSV;
-    characterList.appendChild(exportButton);
+    // Ajouter les boutons d'exportation
+    const exportCSVButton = document.createElement('button');
+    exportCSVButton.textContent = 'Exporter en CSV';
+    exportCSVButton.onclick = exportCharactersToCSV;
+    characterList.appendChild(exportCSVButton);
+
+    const exportJSONButton = document.createElement('button');
+    exportJSONButton.textContent = 'Exporter en JSON';
+    exportJSONButton.onclick = exportCharactersToJSON;
+    characterList.appendChild(exportJSONButton);
+
+    const exportPDFButton = document.createElement('button');
+    exportPDFButton.textContent = 'Exporter en PDF';
+    exportPDFButton.onclick = exportCharactersToPDF;
+    characterList.appendChild(exportPDFButton);
 }
 
-// Fonctionnalités existantes
-function saveCharacterData() {
-    const characterFields = ['name', 'age', 'gender', 'appearance', 'profession', 'nickname', 'traits', 'strengths', 'goals', 'fears', 'values', 'past', 'key-events', 'conflicts', 'relations', 'dynamics', 'love-relations', 'evolution', 'long-term-goals', 'changing-events', 'quote', 'distinctive-appearance', 'hobbies', 'memories'];
-    const characterData = { id: Date.now() };
-
-    characterFields.forEach(field => {
-        characterData[field] = document.getElementById(field).value;
-    });
-
-    const characters = JSON.parse(localStorage.getItem('characters')) || [];
-    characters.push(characterData);
-    localStorage.setItem('characters', JSON.stringify(characters));
-    showToast('Données enregistrées!');
-    loadCharacterList();
-}
-
-// Autres fonctions existantes (editCharacter, confirmDeleteCharacter, showToast, etc.)
+// Fonctionnalités existantes (saveCharacterData, editCharacter, confirmDeleteCharacter, showToast, etc.)
 
 window.onload = function() {
     loadCharacterList();

@@ -7,72 +7,81 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="character-sheet" id="character-sheet">
-        <h1>Fiche Personnage</h1>
+    <header>
+        <h1>Gestion des Fiches de Personnages</h1>
+    </header>
 
-        <div class="section">
-            <h2>Informations de base</h2>
-            <p><strong>Nom du personnage:</strong> <input type="text" id="name" placeholder="Nom"></p>
-            <p><strong>Âge ou date de naissance:</strong> <input type="text" id="age" placeholder="Âge ou date de naissance"></p>
-            <p><strong>Sexe et éventuellement orientation sexuelle:</strong> <input type="text" id="gender" placeholder="Sexe et orientation"></p>
-            <p><strong>Apparence physique:</strong> <textarea id="appearance" placeholder="Description"></textarea></p>
-            <p><strong>Profession ou rôle dans l'intrigue:</strong> <input type="text" id="profession" placeholder="Profession ou rôle"></p>
-            <p><strong>Citée ou surnom:</strong> <input type="text" id="nickname" placeholder="Citée ou surnom"></p>
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="character-sheets.html">Fiches de Personnages</a>
+        <a href="artifact.html">Artéfacts</a>
+    </nav>
+
+    <div class="container">
+        <div class="character-sheet" id="character-sheet">
+            <h1>Fiche Personnage</h1>
+
+            <div class="section">
+                <h2>Informations de base</h2>
+                <p><strong>Nom du personnage:</strong> <input type="text" id="name" placeholder="Nom"></p>
+                <p><strong>Âge ou date de naissance:</strong> <input type="text" id="age" placeholder="Âge ou date de naissance"></p>
+                <p><strong>Sexe et éventuellement orientation sexuelle:</strong> <input type="text" id="gender" placeholder="Sexe et orientation"></p>
+                <p><strong>Apparence physique:</strong> <textarea id="appearance" placeholder="Description"></textarea></p>
+                <p><strong>Profession ou rôle dans l'intrigue:</strong> <input type="text" id="profession" placeholder="Profession ou rôle"></p>
+                <p><strong>Citée ou surnom:</strong> <input type="text" id="nickname" placeholder="Citée ou surnom"></p>
+            </div>
+
+            <div class="section">
+                <h2>Personnalité</h2>
+                <p><strong>Traits de caractère:</strong> <textarea id="traits" placeholder="Traits de caractère"></textarea></p>
+                <p><strong>Forces et faiblesses:</strong> <textarea id="strengths" placeholder="Forces et faiblesses"></textarea></p>
+                <p><strong>Objectifs et motivations:</strong> <textarea id="goals" placeholder="Objectifs et motivations"></textarea></p>
+                <p><strong>Peurs et faiblesses:</strong> <textarea id="fears" placeholder="Peurs et faiblesses"></textarea></p>
+                <p><strong>Valeurs et croyances:</strong> <textarea id="values" placeholder="Valeurs et croyances"></textarea></p>
+            </div>
+
+            <div class="section">
+                <h2>Histoire personnelle</h2>
+                <p><strong>Passé du personnage:</strong> <textarea id="past" placeholder="Passé du personnage"></textarea></p>
+                <p><strong>Événements clés:</strong> <textarea id="key-events" placeholder="Événements clés"></textarea></p>
+                <p><strong>Conflits:</strong> <textarea id="conflicts" placeholder="Conflits"></textarea></p>
+            </div>
+
+            <div class="section">
+                <h2>Relations</h2>
+                <p><strong>Amis, ennemis, et relations importantes:</strong> <textarea id="relations" placeholder="Amis, ennemis, et relations importantes"></textarea></p>
+                <p><strong>Dynamique entre le personnage et les autres:</strong> <textarea id="dynamics" placeholder="Dynamique entre le personnage et les autres"></textarea></p>
+                <p><strong>Relations amoureuses ou familiales:</strong> <textarea id="love-relations" placeholder="Relations amoureuses ou familiales"></textarea></p>
+            </div>
+
+            <div class="section">
+                <h2>Développement et arc narratif</h2>
+                <p><strong>Évolution du personnage:</strong> <textarea id="evolution" placeholder="Évolution du personnage"></textarea></p>
+                <p><strong>Objectifs à long terme:</strong> <textarea id="long-term-goals" placeholder="Objectifs à long terme"></textarea></p>
+                <p><strong>Événements modifiant le personnage:</strong> <textarea id="changing-events" placeholder="Événements modifiant le personnage"></textarea></p>
+            </div>
+
+            <div class="section">
+                <h2>Réplique clé</h2>
+                <p><strong>Réplique importante:</strong> <textarea id="quote" placeholder="Réplique clé"></textarea></p>
+            </div>
+
+            <div class="section">
+                <h2>Autres détails</h2>
+                <p><strong>Apparence ou comportement distinctif:</strong> <textarea id="distinctive-appearance" placeholder="Apparence ou comportement distinctif"></textarea></p>
+                <p><strong>Passions ou hobbies:</strong> <textarea id="hobbies" placeholder="Passions ou hobbies"></textarea></p>
+                <p><strong>Souvenirs ou objets significatifs:</strong> <textarea id="memories" placeholder="Souvenirs ou objets significatifs"></textarea></p>
+            </div>
+
+            <button onclick="saveCharacterData()">Enregistrer</button>
+            <button onclick="downloadPDF()">Télécharger en PDF</button>
         </div>
 
-        <div class="section">
-            <h2>Personnalité</h2>
-            <p><strong>Traits de caractère:</strong> <textarea id="traits" placeholder="Traits de caractère"></textarea></p>
-            <p><strong>Forces et faiblesses:</strong> <textarea id="strengths" placeholder="Forces et faiblesses"></textarea></p>
-            <p><strong>Objectifs et motivations:</strong> <textarea id="goals" placeholder="Objectifs et motivations"></textarea></p>
-            <p><strong>Peurs et faiblesses:</strong> <textarea id="fears" placeholder="Peurs et faiblesses"></textarea></p>
-            <p><strong>Valeurs et croyances:</strong> <textarea id="values" placeholder="Valeurs et croyances"></textarea></p>
+        <div class="glossary" id="glossary">
+            <h2>Glossaire des Personnages</h2>
+            <div id="character-list"></div>
         </div>
-
-        <div class="section">
-            <h2>Histoire personnelle</h2>
-            <p><strong>Passé du personnage:</strong> <textarea id="past" placeholder="Passé du personnage"></textarea></p>
-            <p><strong>Événements clés:</strong> <textarea id="key-events" placeholder="Événements clés"></textarea></p>
-            <p><strong>Conflits:</strong> <textarea id="conflicts" placeholder="Conflits"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Relations</h2>
-            <p><strong>Amis, ennemis, et relations importantes:</strong> <textarea id="relations" placeholder="Amis, ennemis, et relations importantes"></textarea></p>
-            <p><strong>Dynamique entre le personnage et les autres:</strong> <textarea id="dynamics" placeholder="Dynamique entre le personnage et les autres"></textarea></p>
-            <p><strong>Relations amoureuses ou familiales:</strong> <textarea id="love-relations" placeholder="Relations amoureuses ou familiales"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Développement et arc narratif</h2>
-            <p><strong>Évolution du personnage:</strong> <textarea id="evolution" placeholder="Évolution du personnage"></textarea></p>
-            <p><strong>Objectifs à long terme:</strong> <textarea id="long-term-goals" placeholder="Objectifs à long terme"></textarea></p>
-            <p><strong>Événements modifiant le personnage:</strong> <textarea id="changing-events" placeholder="Événements modifiant le personnage"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Réplique clé</h2>
-            <p><strong>Réplique importante:</strong> <textarea id="quote" placeholder="Réplique clé"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Autres détails</h2>
-            <p><strong>Apparence ou comportement distinctif:</strong> <textarea id="distinctive-appearance" placeholder="Apparence ou comportement distinctif"></textarea></p>
-            <p><strong>Passions ou hobbies:</strong> <textarea id="hobbies" placeholder="Passions ou hobbies"></textarea></p>
-            <p><strong>Souvenirs ou objets significatifs:</strong> <textarea id="memories" placeholder="Souvenirs ou objets significatifs"></textarea></p>
-        </div>
-
-        <button onclick="saveCharacterData()">Enregistrer</button>
-        <button onclick="downloadPDF()">Télécharger en PDF</button>
     </div>
-
-    <div class="glossary" id="glossary">
-        <h2>Glossaire des Personnages</h2>
-        <div id="character-list"></div>
-    </div>
-
-    <a href="artifact.html">Créer ou gérer des artéfacts</a>
-    <a href="character-sheets.html">Gérer les fiches de personnages</a>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>

@@ -32,7 +32,7 @@ function saveCharacterData() {
 function downloadPDF() {
     html2canvas(document.getElementById('character-sheet')).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
+        const pdf = new jspdf.jsPDF();
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;

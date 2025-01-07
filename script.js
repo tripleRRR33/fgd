@@ -30,13 +30,15 @@ function saveCharacterData() {
 }
 
 function downloadPDF() {
-    html2canvas(document.getElementById('character-sheet'), {
-        onrendered: function(canvas) {
-            var imgData = canvas.toDataURL('image/png');
-            var doc = new jsPDF();
-            doc.addImage(imgData, 'PNG', 10, 10);
-            doc.save('fiche_personnage.pdf');
-        }
+    html2canvas(document.getElementById('character-sheet')).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('fiche_personnage.pdf');
     });
 }
 

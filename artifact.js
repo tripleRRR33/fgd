@@ -1,51 +1,3 @@
-// Fonction pour convertir les données des personnages en CSV
-function exportCharactersToCSV() {
-    const characters = JSON.parse(localStorage.getItem('characters')) || [];
-    if (characters.length === 0) {
-        alert('Aucun personnage à exporter.');
-        return;
-    }
-
-    const characterFields = ['name', 'age', 'gender', 'appearance', 'profession', 'nickname', 'traits', 'strengths', 'goals', 'fears', 'values', 'past', 'key-events', 'conflicts', 'relations', 'dynamics', 'love-relations', 'evolution', 'long-term-goals', 'changing-events', 'quote', 'distinctive-appearance', 'hobbies', 'memories'];
-    const csvRows = [];
-
-    // Ajouter les en-têtes
-    csvRows.push(characterFields.join(','));
-
-    // Ajouter les données des personnages
-    characters.forEach(character => {
-        const values = characterFields.map(field => `"${character[field] || ''}"`);
-        csvRows.push(values.join(','));
-    });
-
-    // Créer un blob et le télécharger
-    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'characters.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-// Fonction pour convertir les données des personnages en JSON
-function exportCharactersToJSON() {
-    const characters = JSON.parse(localStorage.getItem('characters')) || [];
-    if (characters.length === 0) {
-        alert('Aucun personnage à exporter.');
-        return;
-    }
-
-    const jsonString = JSON.stringify(characters, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'characters.json';
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
 // Fonction pour convertir les données des personnages en PDF
 function exportCharactersToPDF() {
     const characters = JSON.parse(localStorage.getItem('characters')) || [];
@@ -58,9 +10,17 @@ function exportCharactersToPDF() {
     const doc = new jsPDF();
 
     characters.forEach((character, index) => {
-        doc.text(`Personnage ${index + 1}`, 10, 10 + index * 10);
+        doc.setFontSize(16);
+        doc.text(`Personnage ${index + 1}`, 10, 10);
+        doc.setFontSize(12);
+        let yPosition = 20;
         for (const [key, value] of Object.entries(character)) {
-            doc.text(`${key}: ${value}`, 10, 20 + index * 10);
+            doc.text(`${key}: ${value}`, 10, yPosition);
+            yPosition += 10;
+            if (yPosition > 270) { // Pour éviter que le texte dépasse la page
+                doc.addPage();
+                yPosition = 20;
+            }
         }
         if (index !== characters.length - 1) {
             doc.addPage();

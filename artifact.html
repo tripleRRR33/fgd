@@ -10,75 +10,13 @@
     <div class="artifact-sheet" id="artifact-sheet">
         <h1>Fiche Artéfact</h1>
 
-        <div class="section">
-            <h2>Informations de base</h2>
-            <p><strong>Nom de l’artéfact:</strong> <input type="text" id="name" placeholder="Nom"></p>
-            <p><strong>Catégorie:</strong> <input type="text" id="category" placeholder="Catégorie"></p>
-            <p><strong>Origine:</strong> <input type="text" id="origin" placeholder="Origine"></p>
-            <p><strong>Apparence physique:</strong> <textarea id="appearance" placeholder="Description"></textarea></p>
-            <p><strong>Taille:</strong> <input type="text" id="size" placeholder="Taille"></p>
-            <p><strong>Matériaux:</strong> <input type="text" id="materials" placeholder="Matériaux"></p>
-            <p><strong>Particularités visuelles:</strong> <input type="text" id="visual-features" placeholder="Particularités visuelles"></p>
-        </div>
-
-        <div class="section">
-            <h2>Pouvoirs et capacités</h2>
-            <p><strong>Pouvoir principal:</strong> <textarea id="main-power" placeholder="Pouvoir principal"></textarea></p>
-            <p><strong>Effets secondaires:</strong> <textarea id="side-effects" placeholder="Effets secondaires"></textarea></p>
-            <p><strong>Limites:</strong> <textarea id="limits" placeholder="Limites"></textarea></p>
-            <p><strong>Conditions d’activation:</strong> <textarea id="activation-conditions" placeholder="Conditions d’activation"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Rôle dans l'histoire</h2>
-            <p><strong>Utilité pour les personnages:</strong> <textarea id="character-usefulness" placeholder="Utilité pour les personnages"></textarea></p>
-            <p><strong>Importance pour l’intrigue:</strong> <textarea id="story-importance" placeholder="Importance pour l’intrigue"></textarea></p>
-            <p><strong>Conflits associés:</strong> <textarea id="associated-conflicts" placeholder="Conflits associés"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Origine et histoire</h2>
-            <p><strong>Créateur ou origine légendaire:</strong> <textarea id="creator" placeholder="Créateur ou origine légendaire"></textarea></p>
-            <p><strong>Événements marquants:</strong> <textarea id="key-events" placeholder="Événements marquants"></textarea></p>
-            <p><strong>Évolution au fil du temps:</strong> <textarea id="evolution" placeholder="Évolution au fil du temps"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Effets sur l'utilisateur</h2>
-            <p><strong>Bénéfices:</strong> <textarea id="benefits" placeholder="Bénéfices"></textarea></p>
-            <p><strong>Effets négatifs:</strong> <textarea id="negative-effects" placeholder="Effets négatifs"></textarea></p>
-            <p><strong>Compatibilité:</strong> <textarea id="compatibility" placeholder="Compatibilité"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Relations avec l’univers</h2>
-            <p><strong>Liens avec d’autres éléments de l’histoire:</strong> <textarea id="story-links" placeholder="Liens avec d’autres éléments de l’histoire"></textarea></p>
-            <p><strong>Réputation ou mythologie:</strong> <textarea id="mythology" placeholder="Réputation ou mythologie"></textarea></p>
-            <p><strong>Réactions des personnages:</strong> <textarea id="character-reactions" placeholder="Réactions des personnages"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Citations ou symbolisme</h2>
-            <p><strong>Phrase ou légende associée:</strong> <textarea id="associated-quote" placeholder="Phrase ou légende associée"></textarea></p>
-            <p><strong>Symbole ou métaphore:</strong> <textarea id="symbolism" placeholder="Symbole ou métaphore"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Visualisation et détails additionnels</h2>
-            <p><strong>Sons ou effets visuels:</strong> <textarea id="visual-effects" placeholder="Sons ou effets visuels"></textarea></p>
-            <p><strong>Objets ou lieux associés:</strong> <textarea id="associated-objects" placeholder="Objets ou lieux associés"></textarea></p>
-            <p><strong>Description contextuelle:</strong> <textarea id="contextual-description" placeholder="Description contextuelle"></textarea></p>
-        </div>
-
-        <div class="section">
-            <h2>Évolution possible de l’artéfact</h2>
-            <p><strong>Altérations:</strong> <textarea id="alterations" placeholder="Altérations"></textarea></p>
-            <p><strong>Révélation de nouveaux secrets:</strong> <textarea id="new-secrets" placeholder="Révélation de nouveaux secrets"></textarea></p>
-            <p><strong>Lien avec l’évolution du héros:</strong> <textarea id="hero-evolution-link" placeholder="Lien avec l’évolution du héros"></textarea></p>
-        </div>
+        <!-- Sections du formulaire -->
 
         <button onclick="saveArtifactData()">Enregistrer</button>
         <button onclick="downloadPDF()">Télécharger en PDF</button>
+        <button onclick="exportArtifactsToCSV()">Exporter en CSV</button>
+        <button onclick="exportArtifactsToJSON()">Exporter en JSON</button>
+        <button onclick="exportArtifactsToPDF()">Exporter en PDF</button>
     </div>
 
     <div class="glossary" id="glossary">

@@ -1,8 +1,56 @@
-// Fonction pour convertir les données des personnages en PDF
-function exportCharactersToPDF() {
-    const characters = JSON.parse(localStorage.getItem('characters')) || [];
-    if (characters.length === 0) {
-        alert('Aucun personnage à exporter.');
+// Fonction pour convertir les données des artéfacts en CSV
+function exportArtifactsToCSV() {
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
+    if (artifacts.length === 0) {
+        alert('Aucun artéfact à exporter.');
+        return;
+    }
+
+    const artifactFields = ['name', 'category', 'origin', 'appearance', 'size', 'materials', 'visual-features', 'main-power', 'side-effects', 'limits', 'activation-conditions', 'character-usefulness', 'story-importance', 'associated-conflicts', 'creator', 'key-events', 'evolution', 'benefits', 'negative-effects', 'compatibility', 'story-links', 'mythology', 'character-reactions', 'associated-quote', 'symbolism', 'visual-effects', 'associated-objects', 'contextual-description', 'alterations', 'new-secrets', 'hero-evolution-link'];
+    const csvRows = [];
+
+    // Ajouter les en-têtes
+    csvRows.push(artifactFields.join(','));
+
+    // Ajouter les données des artéfacts
+    artifacts.forEach(artifact => {
+        const values = artifactFields.map(field => `"${artifact[field] || ''}"`);
+        csvRows.push(values.join(','));
+    });
+
+    // Créer un blob et le télécharger
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'artifacts.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Fonction pour convertir les données des artéfacts en JSON
+function exportArtifactsToJSON() {
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
+    if (artifacts.length === 0) {
+        alert('Aucun artéfact à exporter.');
+        return;
+    }
+
+    const jsonString = JSON.stringify(artifacts, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'artifacts.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Fonction pour convertir les données des artéfacts en PDF
+function exportArtifactsToPDF() {
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
+    if (artifacts.length === 0) {
+        alert('Aucun artéfact à exporter.');
         return;
     }
 
@@ -11,40 +59,47 @@ function exportCharactersToPDF() {
 
     const translateKey = (key) => {
         const translations = {
-            name: "Nom du personnage",
-            age: "Âge ou date de naissance",
-            gender: "Sexe et orientation sexuelle",
+            name: "Nom de l'artéfact",
+            category: "Catégorie",
+            origin: "Origine",
             appearance: "Apparence physique",
-            profession: "Profession ou rôle dans l'intrigue",
-            nickname: "Citée ou surnom",
-            traits: "Traits de caractère",
-            strengths: "Forces et faiblesses",
-            goals: "Objectifs et motivations",
-            fears: "Peurs et faiblesses",
-            values: "Valeurs et croyances",
-            past: "Passé du personnage",
-            "key-events": "Événements clés",
-            conflicts: "Conflits",
-            relations: "Amis, ennemis, et relations importantes",
-            dynamics: "Dynamique entre le personnage et les autres",
-            "love-relations": "Relations amoureuses ou familiales",
-            evolution: "Évolution du personnage",
-            "long-term-goals": "Objectifs à long terme",
-            "changing-events": "Événements modifiant le personnage",
-            quote: "Réplique importante",
-            "distinctive-appearance": "Apparence ou comportement distinctif",
-            hobbies: "Passions ou hobbies",
-            memories: "Souvenirs ou objets significatifs",
+            size: "Taille",
+            materials: "Matériaux",
+            "visual-features": "Particularités visuelles",
+            "main-power": "Pouvoir principal",
+            "side-effects": "Effets secondaires",
+            limits: "Limites",
+            "activation-conditions": "Conditions d’activation",
+            "character-usefulness": "Utilité pour les personnages",
+            "story-importance": "Importance pour l’intrigue",
+            "associated-conflicts": "Conflits associés",
+            creator: "Créateur ou origine légendaire",
+            "key-events": "Événements marquants",
+            evolution: "Évolution au fil du temps",
+            benefits: "Bénéfices",
+            "negative-effects": "Effets négatifs",
+            compatibility: "Compatibilité",
+            "story-links": "Liens avec d’autres éléments de l’histoire",
+            mythology: "Réputation ou mythologie",
+            "character-reactions": "Réactions des personnages",
+            "associated-quote": "Phrase ou légende associée",
+            symbolism: "Symbole ou métaphore",
+            "visual-effects": "Sons ou effets visuels",
+            "associated-objects": "Objets ou lieux associés",
+            "contextual-description": "Description contextuelle",
+            alterations: "Altérations",
+            "new-secrets": "Révélation de nouveaux secrets",
+            "hero-evolution-link": "Lien avec l’évolution du héros",
         };
         return translations[key] || key;
     };
 
-    characters.forEach((character, index) => {
+    artifacts.forEach((artifact, index) => {
         doc.setFontSize(16);
-        doc.text(`Personnage ${index + 1}`, 10, 10);
+        doc.text(`Artéfact ${index + 1}`, 10, 10);
         doc.setFontSize(12);
         let yPosition = 20;
-        for (const [key, value] of Object.entries(character)) {
+        for (const [key, value] of Object.entries(artifact)) {
             doc.text(`${translateKey(key)}: ${value}`, 10, yPosition);
             yPosition += 10;
             if (yPosition > 270) { // Pour éviter que le texte dépasse la page
@@ -52,59 +107,59 @@ function exportCharactersToPDF() {
                 yPosition = 20;
             }
         }
-        if (index !== characters.length - 1) {
+        if (index !== artifacts.length - 1) {
             doc.addPage();
         }
     });
 
-    doc.save('characters.pdf');
+    doc.save('artifacts.pdf');
 }
 
-// Ajouter les boutons pour l'exportation dans la liste des personnages
-function loadCharacterList() {
-    const characterList = document.getElementById('character-list');
-    characterList.innerHTML = '';
-    const characters = JSON.parse(localStorage.getItem('characters')) || [];
+// Ajouter les boutons pour l'exportation dans la liste des artéfacts
+function loadArtifactList() {
+    const artifactList = document.getElementById('artifact-list');
+    artifactList.innerHTML = '';
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
 
-    characters.forEach(character => {
-        const characterItem = document.createElement('div');
-        characterItem.className = 'character-item';
-        characterItem.innerHTML = `
-            <p><strong>Nom:</strong> ${character.name}</p>
-            <button onclick="editCharacter(${character.id})"><span class="icon">✏️</span> Éditer</button>
-            <button onclick="confirmDeleteCharacter(${character.id})"><span class="icon">🗑️</span> Supprimer</button>
-            <button onclick="downloadCharacterPDF(${character.id})"><span class="icon">📄</span> Télécharger en PDF</button>
+    artifacts.forEach(artifact => {
+        const artifactItem = document.createElement('div');
+        artifactItem.className = 'artifact-item';
+        artifactItem.innerHTML = `
+            <p><strong>Nom:</strong> ${artifact.name}</p>
+            <button onclick="editArtifact(${artifact.id})"><span class="icon">✏️</span> Éditer</button>
+            <button onclick="confirmDeleteArtifact(${artifact.id})"><span class="icon">🗑️</span> Supprimer</button>
+            <button onclick="downloadArtifactPDF(${artifact.id})"><span class="icon">📄</span> Télécharger en PDF</button>
         `;
-        characterList.appendChild(characterItem);
+        artifactList.appendChild(artifactItem);
     });
 
     // Ajouter les boutons d'exportation
     const exportCSVButton = document.createElement('button');
     exportCSVButton.textContent = 'Exporter en CSV';
-    exportCSVButton.onclick = exportCharactersToCSV;
-    characterList.appendChild(exportCSVButton);
+    exportCSVButton.onclick = exportArtifactsToCSV;
+    artifactList.appendChild(exportCSVButton);
 
     const exportJSONButton = document.createElement('button');
     exportJSONButton.textContent = 'Exporter en JSON';
-    exportJSONButton.onclick = exportCharactersToJSON;
-    characterList.appendChild(exportJSONButton);
+    exportJSONButton.onclick = exportArtifactsToJSON;
+    artifactList.appendChild(exportJSONButton);
 
     const exportPDFButton = document.createElement('button');
     exportPDFButton.textContent = 'Exporter en PDF';
-    exportPDFButton.onclick = exportCharactersToPDF;
-    characterList.appendChild(exportPDFButton);
+    exportPDFButton.onclick = exportArtifactsToPDF;
+    artifactList.appendChild(exportPDFButton);
 }
 
-// Fonctionnalités existantes (saveCharacterData, editCharacter, confirmDeleteCharacter, showToast, etc.)
+// Fonctionnalités existantes (saveArtifactData, editArtifact, confirmDeleteArtifact, showToast, etc.)
 
 window.onload = function() {
-    loadCharacterList();
+    loadArtifactList();
 
     // Ajoutez un écouteur pour la barre de recherche
     document.getElementById('search').addEventListener('input', function(e) {
         const searchTerm = e.target.value.toLowerCase();
-        const characterItems = document.querySelectorAll('.character-item');
-        characterItems.forEach(item => {
+        const artifactItems = document.querySelectorAll('.artifact-item');
+        artifactItems.forEach(item => {
             const name = item.querySelector('p').textContent.toLowerCase();
             if (name.includes(searchTerm)) {
                 item.style.display = '';

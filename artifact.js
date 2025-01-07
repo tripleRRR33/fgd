@@ -1,11 +1,62 @@
-// Fonction pour convertir les données des artéfacts en CSV
-function exportArtifactsToCSV() {
+// Fonction pour enregistrer un artéfact dans le localStorage
+function saveArtifactData() {
+    const artifact = {
+        id: Date.now(),
+        name: document.getElementById('name').value,
+        category: document.getElementById('category').value,
+        origin: document.getElementById('origin').value,
+        appearance: document.getElementById('appearance').value,
+        size: document.getElementById('size').value,
+        materials: document.getElementById('materials').value,
+        'visual-features': document.getElementById('visual-features').value,
+        'main-power': document.getElementById('main-power').value,
+        'side-effects': document.getElementById('side-effects').value,
+        limits: document.getElementById('limits').value,
+        'activation-conditions': document.getElementById('activation-conditions').value,
+        'character-usefulness': document.getElementById('character-usefulness').value,
+        'story-importance': document.getElementById('story-importance').value,
+        'associated-conflicts': document.getElementById('associated-conflicts').value,
+        creator: document.getElementById('creator').value,
+        'key-events': document.getElementById('key-events').value,
+        evolution: document.getElementById('evolution').value,
+        benefits: document.getElementById('benefits').value,
+        'negative-effects': document.getElementById('negative-effects').value,
+        compatibility: document.getElementById('compatibility').value,
+        'story-links': document.getElementById('story-links').value,
+        mythology: document.getElementById('mythology').value,
+        'character-reactions': document.getElementById('character-reactions').value,
+        'associated-quote': document.getElementById('associated-quote').value,
+        symbolism: document.getElementById('symbolism').value,
+        'visual-effects': document.getElementById('visual-effects').value,
+        'associated-objects': document.getElementById('associated-objects').value,
+        'contextual-description': document.getElementById('contextual-description').value,
+        alterations: document.getElementById('alterations').value,
+        'new-secrets': document.getElementById('new-secrets').value,
+        'hero-evolution-link': document.getElementById('hero-evolution-link').value
+    };
+
+    let artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
+    artifacts.push(artifact);
+    localStorage.setItem('artifacts', JSON.stringify(artifacts));
+    alert('Artéfact enregistré avec succès!');
+    loadArtifactList();
+}
+
+// Fonction de vérification si des artéfacts existent avant l'exportation
+function checkArtifactsExist() {
     const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
     if (artifacts.length === 0) {
         alert('Aucun artéfact à exporter.');
-        return;
+        return false;
     }
+    return true;
+}
 
+// Modifier les fonctions d'exportation pour vérifier si des artéfacts existent avant de procéder
+function exportArtifactsToCSV() {
+    if (!checkArtifactsExist()) return;
+
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
     const artifactFields = ['name', 'category', 'origin', 'appearance', 'size', 'materials', 'visual-features', 'main-power', 'side-effects', 'limits', 'activation-conditions', 'character-usefulness', 'story-importance', 'associated-conflicts', 'creator', 'key-events', 'evolution', 'benefits', 'negative-effects', 'compatibility', 'story-links', 'mythology', 'character-reactions', 'associated-quote', 'symbolism', 'visual-effects', 'associated-objects', 'contextual-description', 'alterations', 'new-secrets', 'hero-evolution-link'];
     const csvRows = [];
 
@@ -28,14 +79,10 @@ function exportArtifactsToCSV() {
     URL.revokeObjectURL(url);
 }
 
-// Fonction pour convertir les données des artéfacts en JSON
 function exportArtifactsToJSON() {
-    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
-    if (artifacts.length === 0) {
-        alert('Aucun artéfact à exporter.');
-        return;
-    }
+    if (!checkArtifactsExist()) return;
 
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
     const jsonString = JSON.stringify(artifacts, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -46,14 +93,10 @@ function exportArtifactsToJSON() {
     URL.revokeObjectURL(url);
 }
 
-// Fonction pour convertir les données des artéfacts en PDF
 function exportArtifactsToPDF() {
-    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
-    if (artifacts.length === 0) {
-        alert('Aucun artéfact à exporter.');
-        return;
-    }
+    if (!checkArtifactsExist()) return;
 
+    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -89,7 +132,7 @@ function exportArtifactsToPDF() {
             "contextual-description": "Description contextuelle",
             alterations: "Altérations",
             "new-secrets": "Révélation de nouveaux secrets",
-            "hero-evolution-link": "Lien avec l’évolution du héros",
+            "hero-evolution-link": "Lien avec l’évolution du héros"
         };
         return translations[key] || key;
     };
@@ -113,59 +156,4 @@ function exportArtifactsToPDF() {
     });
 
     doc.save('artifacts.pdf');
-}
-
-// Ajouter les boutons pour l'exportation dans la liste des artéfacts
-function loadArtifactList() {
-    const artifactList = document.getElementById('artifact-list');
-    artifactList.innerHTML = '';
-    const artifacts = JSON.parse(localStorage.getItem('artifacts')) || [];
-
-    artifacts.forEach(artifact => {
-        const artifactItem = document.createElement('div');
-        artifactItem.className = 'artifact-item';
-        artifactItem.innerHTML = `
-            <p><strong>Nom:</strong> ${artifact.name}</p>
-            <button onclick="editArtifact(${artifact.id})"><span class="icon">✏️</span> Éditer</button>
-            <button onclick="confirmDeleteArtifact(${artifact.id})"><span class="icon">🗑️</span> Supprimer</button>
-            <button onclick="downloadArtifactPDF(${artifact.id})"><span class="icon">📄</span> Télécharger en PDF</button>
-        `;
-        artifactList.appendChild(artifactItem);
-    });
-
-    // Ajouter les boutons d'exportation
-    const exportCSVButton = document.createElement('button');
-    exportCSVButton.textContent = 'Exporter en CSV';
-    exportCSVButton.onclick = exportArtifactsToCSV;
-    artifactList.appendChild(exportCSVButton);
-
-    const exportJSONButton = document.createElement('button');
-    exportJSONButton.textContent = 'Exporter en JSON';
-    exportJSONButton.onclick = exportArtifactsToJSON;
-    artifactList.appendChild(exportJSONButton);
-
-    const exportPDFButton = document.createElement('button');
-    exportPDFButton.textContent = 'Exporter en PDF';
-    exportPDFButton.onclick = exportArtifactsToPDF;
-    artifactList.appendChild(exportPDFButton);
-}
-
-// Fonctionnalités existantes (saveArtifactData, editArtifact, confirmDeleteArtifact, showToast, etc.)
-
-window.onload = function() {
-    loadArtifactList();
-
-    // Ajoutez un écouteur pour la barre de recherche
-    document.getElementById('search').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const artifactItems = document.querySelectorAll('.artifact-item');
-        artifactItems.forEach(item => {
-            const name = item.querySelector('p').textContent.toLowerCase();
-            if (name.includes(searchTerm)) {
-                item.style.display = '';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
 }
